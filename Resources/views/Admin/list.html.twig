@@ -1,0 +1,56 @@
+{% extends "NavalexConfigBundle::layout-admin.html.twig" %}
+
+{% block title %}{{ 'navalex.config.admin.configuration'|trans({}, 'NavalexConfigBundle') }}: {{ category.name }} - {{ parent() }}{% endblock %}
+
+{% block panel_title %}{{ category.name }}{% endblock %}
+
+{% block admin_sidebar %}{{ include('@NavalexConfig/Admin/Sample/sidebar_config.html.twig') }}{% endblock %}
+
+{% block panel_content %}
+    <div class="card-body">
+        <form action="{{ path('navalex.config.admin.list', {'id': category.id}) }}" class="" method="post">
+            {% for fieldset in category.fieldsets %}
+                <div class="row-fluid">
+                    <h4>{{ fieldset.name }}</h4>
+                    <hr>
+
+                    <div class="clearfix">
+                        {% for configuration in fieldset.configurations %}
+                            <div class="form-group">
+                                {% if configuration.field == 'checkbox' %}
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="{{ configuration.field }}" name="{{ configuration.id }}" id="{{ configuration.id }}" {% if configuration.value == 1 %}checked{% endif %}>
+                                            <label class="custom-control-label" for="{{ configuration.id }}">{{ configuration.description|trans({}, configuration.translation) }}</label>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-2">
+                                        <label for="{{ configuration.name }}">{{ configuration.description|trans({}, configuration.translation) }}</label>
+                                        <span id="helpBlock" class="help-block">{{ configuration.helper }}</span>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                        {% if configuration.field == 'tinymce' %}
+                                            <textarea name="{{ configuration.id }}" id="{{ configuration.id }}" class="form-control">{{ configuration.value }}</textarea>
+                                        {% else %}
+                                            <input type="{{ configuration.field }}" name="{{ configuration.id }}" id="{{ configuration.id }}" class="form-control" value="{{ configuration.value }}">
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <br>
+            {% endfor %}
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary">{{ 'navalex.config.admin.form.edit'|trans({}, 'NavalexConfigBundle') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

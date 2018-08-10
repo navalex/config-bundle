@@ -1,0 +1,7 @@
+navalex:
+    config:
+        admin:
+            manage: Manage
+            manage.categories: Categories
+            manage.fieldsets: Fieldsets
+            manage.configurations: Configurations

@@ -1,0 +1,11 @@
+services:
+    ## ConfigService
+    navalex_config.config:
+        class:     Navalex\ConfigBundle\Services\Config
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    navalex_config.twig:
+        class:     Navalex\ConfigBundle\Services\ConfigTwig
+        arguments: ["@navalex_config.config"]
+        tags:
+            -  { name: twig.extension }

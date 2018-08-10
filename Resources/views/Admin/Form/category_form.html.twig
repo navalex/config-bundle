@@ -1,0 +1,20 @@
+{{ form_errors(form) }}
+{{ form_start(form, {'attr': {'id': '#edit' ~ item.id}}) }}
+<td style="vertical-align: middle;">{{ item.id }}</td>
+{% if app.request.attributes.all['mode'] == 'cat' %}
+    <td>{{ form_widget(form.name, { 'attr': {'class': 'form-control form-control-sm'} }) }}</td>
+{% elseif app.request.attributes.all['mode'] == 'field' %}
+    <td>{{ form_widget(form.name, { 'attr': {'class': 'form-control form-control-sm'} }) }}</td>
+    <td>{{ form_widget(form.category, { 'attr': {'class': 'form-control form-control-sm'} }) }}</td>
+{% elseif app.request.attributes.all['mode'] == 'conf' %}
+    <td>{{ form_widget(form.name, { 'attr': {'class': 'form-control form-control-sm'} }) }}</td>
+    <td>{{ form_widget(form.description, { 'attr': {'class': 'form-control form-control-sm'} }) }}</td>
+    <td>{{ form_widget(form.fieldset, { 'attr': {'class': 'custom-select custom-select-sm'} }) }}</td>
+    <td>{{ form_widget(form.field, { 'attr': {'class': 'custom-select custom-select-sm'} }) }}</td>
+{% endif %}
+<td style="vertical-align: middle;">
+    <button type="submit" class="btn btn-success btn-sm" form="{{ '#edit' ~ item.id }}"><i class="fa fa-check"></i></button>
+    <a href="{{ path('navalex.config.admin.get-cat', {'id': item.id, 'mode': app.request.attributes.all['mode']}) }}" class="btn btn-warning btn-sm btn-ajax"><i class="fa fa-ban"></i></a>
+    <div class="d-none">{{ form_rest(form) }}</div>
+</td>
+{{ form_end(form) }}

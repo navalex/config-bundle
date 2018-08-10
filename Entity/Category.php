@@ -1,0 +1,117 @@
+<?php
+
+namespace Navalex\ConfigBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * Category
+ *
+ * @ORM\Table(name="navalex__config__category")
+ * @ORM\Entity(repositoryClass="Navalex\ConfigBundle\Repository\CategoryRepository")
+ */
+class Category
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Navalex\ConfigBundle\Entity\Fieldset", cascade={"remove"}, mappedBy="category")
+     */
+    private $fieldsets;
+
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Category
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->fieldsets = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add fieldset
+     *
+     * @param \Navalex\ConfigBundle\Entity\Fieldset $fieldset
+     *
+     * @return Category
+     */
+    public function addFieldset(\Navalex\ConfigBundle\Entity\Fieldset $fieldset)
+    {
+        $this->fieldsets[] = $fieldset;
+
+        return $this;
+    }
+
+    /**
+     * Remove fieldset
+     *
+     * @param \Navalex\ConfigBundle\Entity\Fieldset $fieldset
+     */
+    public function removeFieldset(\Navalex\ConfigBundle\Entity\Fieldset $fieldset)
+    {
+        $this->fieldsets->removeElement($fieldset);
+    }
+
+    /**
+     * Get fieldsets
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFieldsets()
+    {
+        return $this->fieldsets;
+    }
+}

@@ -1,0 +1,29 @@
+navalex.config.admin.home:
+    path:     /
+    defaults: { _controller: NavalexConfigBundle:Admin:home }
+
+navalex.config.admin.list:
+    path:     /list/{id}/
+    defaults:
+        _controller: NavalexConfigBundle:Admin:list
+
+navalex.config.admin.list-cat:
+    path:     conf/{mode}/{page}
+    defaults:
+        _controller: NavalexConfigBundle:Admin:listCat
+        mode: "cat"
+        page: 1
+navalex.config.admin.remove-cat:
+    path:     del/{mode}/{id}
+    defaults:
+        _controller: NavalexConfigBundle:Admin:removeCat
+
+navalex.config.admin.get-cat:
+    path:     get/{mode}/{id}
+    defaults:
+        _controller: NavalexConfigBundle:Admin:getCat
+
+navalex.config.admin.edit-cat:
+    path:     edit/{mode}/{id}
+    defaults:
+        _controller: NavalexConfigBundle:Admin:editCat

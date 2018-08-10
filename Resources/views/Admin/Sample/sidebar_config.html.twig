@@ -1,0 +1,9 @@
+<div class="card mb-3">
+    <div class="card-header">{{ 'navalex.config.admin.categories'|trans({}, 'NavalexConfigBundle') }}</div>
+
+    <div class="list-group">
+        {% for cat in categoryList %}
+            <a class="list-group-item" href="{{ path('navalex.config.admin.list', {'id': cat.id}) }}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+</div>

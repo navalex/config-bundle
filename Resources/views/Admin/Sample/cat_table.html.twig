@@ -1,0 +1,15 @@
+<td class="align-middle">{{ item.id }}</td>
+{% if app.request.attributes.all['mode'] == 'conf' %}
+    <td>{{ item.description }}</td>
+{% endif %}
+<td class="align-middle">{{ item.name }}</td>
+{% if app.request.attributes.all['mode'] == 'conf' %}
+    <td class="align-middle">{{ item.fieldset.category.name }}</td>
+    <td class="align-middle">{{ item.field|trans({}, 'NavalexConfigBundle') }}</td>
+{% elseif app.request.attributes.all['mode'] == 'field' %}
+    <td class="align-middle">{{ item.category.name }}</td>
+{% endif %}
+<td class="align-middle">
+    <a href="{{ path('navalex.config.admin.edit-cat', {'mode': app.request.attributes.all['mode'], 'id': item.id}) }}" class="btn btn-warning btn-ajax btn-sm"><i class="fa fa-edit"></i></a>
+    <a href="{{ path('navalex.config.admin.remove-cat', {'id': item.id, 'mode': app.request.attributes.all['mode']}) }}" class="btn btn-danger btn-sm btn-remove"><i class="fa fa-remove"></i></a>
+</td>

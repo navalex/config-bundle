@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="description" content="Navapanel for NavalexConfigBundle" />
+    <meta name="author" content="Alexandre Navaro">
+
+    <link rel="icon" type="image/png" href="http://navalex.net/assets/img/minilogo.png" />
+
+    <title>{% block title %}Navapanel{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.10/dist/sweetalert2.min.css" integrity="sha256-l3bovuc2ZgP9xFQzABLB6V7CvtxLpXBIxj+jf6lExZI=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        .table td {
+            white-space: nowrap;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.26.10/dist/sweetalert2.min.js" integrity="sha256-G33T4NVqNVqj/jCCY8TeKvPAXljdlYX4fyZvWq0iNtY=" crossorigin="anonymous"></script>
+</head>
+<body>
+{% block navbar %}
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="#">Navapanel</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminbar" aria-controls="adminbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminbar">
+                <ul class="navbar-nav mr-auto">
+                    {% for cat in categoryList %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('navalex.config.admin.list', {'id': cat.id}) }}">{{ cat.name }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <ul class="navbar-nav my-2 my-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ 'navalex.config.admin.manage'|trans({}, 'NavalexConfigBundle') }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'cat'}) }}">{{ 'navalex.config.admin.manage.categories'|trans({}, 'NavalexConfigBundle') }}</a>
+                            <a class="dropdown-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'field'}) }}">{{ 'navalex.config.admin.manage.fieldsets'|trans({}, 'NavalexConfigBundle') }}</a>
+                            <a class="dropdown-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'conf'}) }}">{{ 'navalex.config.admin.manage.configurations'|trans({}, 'NavalexConfigBundle') }}</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-admin-sidebar">
+                {% block admin_sidebar %}{% endblock %}
+            </div>
+
+            <div class="col-md-9 col-admin-content">
+                {% block admin_layout_content %}
+                    <div class="card mb-3">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0 rounded-0">
+                                    <li class="breadcrumb-item"><a href="{{ path('navalex.config.admin.home') }}">{{ 'navalex.config.admin.configuration'|trans({}, 'NavalexConfigBundle') }}</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">{% block panel_title %}Accueil{% endblock %}</li>
+                                </ol>
+                            </nav>
+
+                        {% block panel_content %}{% endblock %}
+
+                        <div class="card-footer">{% block panel_footer %}{% endblock %}</div>
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom: 0;">
+    <span><i class="fa fa-copyright"></i> {{ 'navalex.config.admin.legal'|trans({}, 'NavalexConfigBundle') }} <b><a href="http://navalex.net">Navalex</a></b></span>
+</div>
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    $(window).scroll(fadeSection);
+    $(document).ready(fadeSection);
+    $(window).resize(placeFoot);
+    $(document).ready(placeFoot);
+</script>
+{% block add_javascript %}{% endblock %}
+</html>

@@ -1,0 +1,53 @@
+navalex:
+    config:
+        admin:
+            title:
+                cat: Categories list
+                field: Fieldsets list
+                conf: Configurations list
+            manage: Manage
+            manage.categories: Categories
+            manage.fieldsets: Fieldsets
+            manage.configurations: Configurations
+            table:
+                head:
+                    id: Id
+                    name: Name
+                    code: Code
+                    category: Category
+                    type: Type
+                    action: Action
+            legal: Navapanel by
+            form:
+                add: Add
+                edit: Edit
+                cat:
+                    name: Category name
+                field:
+                    name: Fieldset name
+                config:
+                    code: Configuration unique code
+                    name: Configuration name
+                    types:
+                        string: String
+                        long_text: Long text
+                        checkbox: Checkbox
+                        number: Number
+                        color: Color picker
+                        mail: Mail
+                        date: Date
+            alert:
+                remove: Are you sure you want to delete it and its children?
+                confirm: Yes
+                cancel: Cancel
+                request_failed: 'Request failed: '
+                deleted: Item deleted
+            configuration: Configuration
+            categories: Categories
+text: String
+tinymce: Long text
+checkbox: Checkbox
+number: Number
+color: Color picker
+email: Mail
+date: Date

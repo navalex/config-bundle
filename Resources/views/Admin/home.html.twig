@@ -1,0 +1,17 @@
+{% extends "NavalexConfigBundle::layout-admin.html.twig" %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-admin-content">
+                <div class="card mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0 rounded-0">
+                            <li class="breadcrumb-item active" aria-current="page">{{ 'navalex.config.admin.configuration'|trans({}, 'NavalexConfigBundle') }}</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

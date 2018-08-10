@@ -1,0 +1,7 @@
+navalex.config.public:
+    resource: public-routing.yml
+    prefix: /config
+
+navalex.config.admin:
+    resource: admin-routing.yml
+    prefix: /admin/config

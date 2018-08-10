@@ -1,0 +1,151 @@
+{% extends "NavalexConfigBundle::layout-admin.html.twig" %}
+
+{% block title %}{{ ('navalex.config.admin.title.' ~ app.request.attributes.all['mode'])|trans({}, 'NavalexConfigBundle') }} - {{ parent() }}{% endblock %}
+
+{% block panel_title %}{{ ('navalex.config.admin.title.' ~ app.request.attributes.all['mode'])|trans({}, 'NavalexConfigBundle') }}{% endblock %}
+
+{% block stylsheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block admin_sidebar %}{{ include('@NavalexConfig/Admin/Sample/sidebar_manage.html.twig') }}{% endblock %}
+
+{% block panel_content %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped mb-0">
+            <thead>
+            <tr>
+                <th style="width: 1px;">{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.id', 'p.id', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                {% if app.request.attributes.all['mode'] == 'conf' %}
+                    <th>{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.name', 'p.description', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                    <th style="width: 1px;">{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.code', 'p.name', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                    <th style="width: 1px;">{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.category', 'p.fieldset.category.name', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                    <th style="width: 1px;">{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.type', 'p.field', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                {% else %}
+                    <th>{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.name', 'p.name', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                {% endif %}
+                {% if app.request.attributes.all['mode'] == 'field' %}
+                    <th style="width: 1px;">{{ knp_pagination_sortable(pagination, 'navalex.config.admin.table.head.category', 'p.category.name', {'translationDomain':'NavalexConfigBundle'}) }}</th>
+                {% endif %}
+                <th style="width: 1px;">{{ 'navalex.config.admin.table.head.action'|trans({}, 'NavalexConfigBundle') }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in pagination %}
+                <tr>
+                    {{ include('@NavalexConfig/Admin/Sample/cat_table.html.twig') }}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block panel_footer %}
+    <div class="row">
+        <div class="{% if pagination.paginationData['last'] > 1 %}col-md-8 mb-3{% else %}col-md-12{% endif %}">
+            {{ form_start(form, {'attr': {'class': 'mb-0 no-ajax'}}) }}
+                <div class="input-group input-group-sm">
+                    {% if app.request.attributes.all['mode'] == 'field' %}
+                        {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                        <div class="input-group-addon"></div>
+                        {{ form_widget(form.category, { 'attr': {'class': 'custom-select custom-select-sm'} }) }}
+                    {% elseif app.request.attributes.all['mode'] == 'conf' %}
+                        <div class="input-group-addon"></div>
+                        {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
+                        <div class="input-group-addon"></div>
+                        {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                        <div class="input-group-addon"></div>
+                        {{ form_widget(form.fieldset, { 'attr': {'class': 'custom-select custom-select-sm'} }) }}
+                        <div class="input-group-addon"></div>
+                        {{ form_widget(form.field, { 'attr': {'class': 'custom-select custom-select-sm'} }) }}
+                    {% else %}
+                        {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                    {% endif %}
+                    <div class="input-group-append">
+                        <button class="btn btn-success btn-sm" type="submit">{{ 'navalex.config.admin.form.add'|trans({}, 'NavalexConfigBundle') }}</button>
+                    </div>
+                </div>
+                <div class="d-none">{{ form_rest(form) }}</div>
+            {{ form_end(form) }}
+        </div>
+        {% if pagination.paginationData['last'] > 1 %}
+            <div class="col-md-4">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block add_javascript %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').on('click', '.btn-ajax', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                $.get($this.attr('href'), function (data) {
+                    var $parent = $this.parent().parent();
+                    $parent.html(data);
+                });
+            });
+            $('body').on('click', '.btn-remove', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                swal({
+                    title: '{{ 'navalex.config.admin.alert.remove'|trans({}, 'NavalexConfigBundle') }}',
+                    showCancelButton: true,
+                    confirmButtonText: '{{ 'navalex.config.admin.alert.confirm'|trans({}, 'NavalexConfigBundle') }}',
+                    cancelButtonText: '{{ 'navalex.config.admin.alert.cancel'|trans({}, 'NavalexConfigBundle') }}',
+                    showLoaderOnConfirm: true,
+                    preConfirm: (login) => {
+                        return fetch($this.attr('href'))
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error(response.statusText)
+                                }
+                                return response.json()
+                            })
+                            .catch(error => {
+                                swal.showValidationError(
+                                    `{{ 'navalex.config.admin.alert.request_failed'|trans({}, 'NavalexConfigBundle') }}: ${error}`
+                                )
+                            })
+                    },
+                    allowOutsideClick: () => !swal.isLoading()
+                }).then((result) => {
+                    if (result.value) {
+                        swal({
+                            title: '{{ 'navalex.config.admin.alert.deleted'|trans({}, 'NavalexConfigBundle') }}',
+                            onClose: function () {
+                                $this.parent().parent().fadeOut(function () {
+                                    $(this).remove();
+                                });
+                            }
+                        });
+                    }
+                })
+                /*$.get($this.attr('href'), function (data) {
+                    $this.parent().parent().fadeOut(function () {
+                        $(this).remove();
+                    });
+                });*/
+            });
+            $('body').on('submit', 'form:not(.no-ajax)', function (e) {
+                e.preventDefault();
+                var $this = $(this);
+
+                $.ajax({
+                    'url': $this.attr('action'),
+                    'method': $this.attr('method'),
+                    'data': $this.parent().find('input, textarea, select').serialize(),
+                    'success': function (data) {
+                        $this.parent().html(data);
+                    }
+                });
+            })
+        });
+    </script>
+{% endblock %}

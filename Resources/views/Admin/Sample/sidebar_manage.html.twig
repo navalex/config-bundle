@@ -1,0 +1,9 @@
+<div class="card mb-3">
+    <div class="card-header">{{ 'navalex.config.admin.manage'|trans({}, 'NavalexConfigBundle') }}</div>
+
+    <div class="list-group">
+        <a class="list-group-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'cat'}) }}">{{ 'navalex.config.admin.manage.categories'|trans({}, 'NavalexConfigBundle') }}</a>
+        <a class="list-group-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'field'}) }}">{{ 'navalex.config.admin.manage.fieldsets'|trans({}, 'NavalexConfigBundle') }}</a>
+        <a class="list-group-item" href="{{ path('navalex.config.admin.list-cat', {'mode': 'conf'}) }}">{{ 'navalex.config.admin.manage.configurations'|trans({}, 'NavalexConfigBundle') }}</a>
+    </div>
+</div>
