@@ -1,5 +1,11 @@
 # NavalexConfigBundle
 
+[![Latest Stable Version](https://poser.pugx.org/navalex/config-bundle/v/stable)](https://packagist.org/packages/navalex/config-bundle)
+[![Total Downloads](https://poser.pugx.org/navalex/config-bundle/downloads)](https://packagist.org/packages/navalex/config-bundle)
+[![Latest Unstable Version](https://poser.pugx.org/navalex/config-bundle/v/unstable)](//packagist.org/packages/navalex/config-bundle)
+[![License](https://poser.pugx.org/navalex/config-bundle/license)](https://packagist.org/packages/navalex/config-bundle)
+[![composer.lock available](https://poser.pugx.org/navalex/config-bundle/composerlock)](https://packagist.org/packages/navalex/config-bundle)
+
 Allows you to create configurations that can be used in your project (Twig and Controller services) and manage them through an admin panel divided into two parts:
 
 - Configuration forms divided in category and fieldset to edit values of your configs:
